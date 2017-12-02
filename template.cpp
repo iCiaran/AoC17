@@ -6,14 +6,15 @@ int main()
 {
     std::ifstream file ("../input.txt");
     std::vector<std::string> input;
-    std::string s;
+    std::string line;
     
-    while(file>>s)
+    while(std::getline(file, line))
     {
-        input.push_back(s);
+        input.push_back(line);
     }
-    
-    for(const auto& i : input){
+   
+    for(const auto& i : input)
+    {
         std::cout << i << '\n';
     }
 }
