@@ -3,19 +3,12 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
-#include <unordered_map>
+#include <map>
 #include <algorithm>
 
 std::vector<int> split(const std::string& s) {
     std::istringstream iss{s};
     return std::vector<int>{std::istream_iterator<int>{iss}, {}};
-}
-
-std::string v_to_string(std::vector<int> input)
-{
-    std::stringstream result;
-    std::copy(input.begin(), input.end(), std::ostream_iterator<int>(result, " "));
-    return result.str();
 }
 
 std::vector<int> cycle(std::vector<int> input, int len)
@@ -41,21 +34,19 @@ int main()
     std::getline(file, line);
     std::vector<int> input = split(line);
 
-    std::unordered_map<std::string, int> past_states;
+    std::map<std::vector<int>, int> past_states;
     int count = 0;
     
     int len = input.size();
-    auto i = past_states.insert({v_to_string(input), count});
+    auto i = past_states.insert({input, count});
     
     while(i.second)
     {
         count++;
         input = cycle(input, len);
-        i = past_states.insert({v_to_string(input), count}); 
+        i = past_states.insert({input, count}); 
     }
-
-    std::string repeat = v_to_string(input);
     
-    std::cout << count-past_states[repeat] << '\n';
+    std::cout << count-past_states[input] << '\n';
 }
 
