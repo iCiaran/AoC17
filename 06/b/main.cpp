@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
-#include <unordered_set>
+#include <unordered_map>
 #include <algorithm>
 
 std::vector<int> split(const std::string& s) {
@@ -41,28 +41,21 @@ int main()
     std::getline(file, line);
     std::vector<int> input = split(line);
 
-    std::unordered_set<std::string> past_states;
+    std::unordered_map<std::string, int> past_states;
     int count = 0;
     
     int len = input.size();
-    auto i = past_states.insert(v_to_string(input));
+    auto i = past_states.insert({v_to_string(input), count});
     
     while(i.second)
     {
-        input = cycle(input, len);
-        i = past_states.insert(v_to_string(input)); 
         count++;
+        input = cycle(input, len);
+        i = past_states.insert({v_to_string(input), count}); 
     }
 
     std::string repeat = v_to_string(input);
-    count = 0;
-    do
-    {
-        input = cycle(input, len);
-        count++;
-    }
-    while(v_to_string(input) != repeat);
-
-    std::cout << count << '\n';
+    
+    std::cout << count-past_states[repeat] << '\n';
 }
 
