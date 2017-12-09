@@ -114,32 +114,45 @@ int main()
     }
     
     std::string root = *potentials.begin();
-    //std::cout << root << '\n';
-    /*
-    for(const auto& i : nodes[root]->children)
-    {
-        std::cout << i << " - " << get_tree_weight(nodes,i) << '\n';
-    }
-    std::cout << find_unbalanced_tree(nodes, root) << '\n';
-    */
+    
+    bool flag = false;
 
     std::string next = root;
-    
+    std::string par  = root;    
     while(nodes[next]->children.size() > 0)
     {
         std::string temp = find_unbalanced_tree(nodes, next);
         if(temp == "0") {
+            flag = true;
             break;
-            std::cout << "break" << '\n';
         } 
+        par = next;
         next = temp;
     }
 
     std::cout << next << '\n';
+    std::cout << par << '\n';
 
-    for(const auto& s : nodes["jfdck"]->children)
+    if(flag)
     {
-        std::cout << s << " - " << get_tree_weight(nodes, s) << '\n';
+        std::map<std::string, int> weights;
+        for(const auto& s : nodes[par]->children)
+        {
+            int w = get_tree_weight(nodes, s);
+            weights.insert({s,w});
+            std::cout << s << " - " << w << '\n';
+        }
+        int i = 0;
+        if(weights[next] == weights[nodes[par]->children[i]]) i++;
+
+        int diff = weights[next] - weights[nodes[par]->children[i]];
+
+        int new_weight = nodes[next]->value - diff;
+
+        std::cout << new_weight << '\n';
+
+    }else{
+        //TODO: One of children is wrong weight
     }
 }
 
