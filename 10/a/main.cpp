@@ -31,15 +31,6 @@ void reverse(std::vector<int>& list, int index, int length)
     }
 }
 
-void print(std::vector<int>& list)
-{
-    for(const auto& i : list)
-    {
-        std::cout << i << " ";
-    }
-    std::cout << '\n';
-}
-
 int main()
 {
     std::ifstream file ("../input.txt");
