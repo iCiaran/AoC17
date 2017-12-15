@@ -1,6 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <sstream>
+#include <iterator>
+
+std::vector<int> split(const std::string& s) {
+    std::istringstream iss{s};
+    return std::vector<int>{std::istream_iterator<int>{iss}, {}};
+}
 
 int main()
 {
