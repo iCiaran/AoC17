@@ -19,15 +19,24 @@ int main()
     std::getline(file, line);
     unsigned long b = stoi(split(line)[4]);
 
-    int mul_a = 16807;
-    int mul_b = 48271;
-    int div = 2147483647;
+    const int mul_a = 16807;
+    const int mul_b = 48271;
+    const int div = 2147483647;
     int count = 0;
-
+    long int prod;
+    
     for(int i=0; i<5000000; ++i)
     {
-        do{a = (a * mul_a) % div;} while(a%4);
-        do{b = (b * mul_b) % div;} while(b%8);
+        do{
+            prod = a * mul_a;
+            a = (prod & 0x7fffffff) + (prod >> 31);
+            a = a >> 31 ? a - 0x7fffffff : a;
+        } while(a&3);
+        do{
+            prod = b * mul_b;
+            b = (prod & 0x7fffffff) + (prod >> 31);
+            b = b >> 31 ? b - 0x7fffffff : b;
+        } while(b&7);
         if((a & 0xFFFF) == (b & 0xFFFF)) count++;
     }
     std::cout << count << '\n';
